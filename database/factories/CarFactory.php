@@ -1,11 +1,20 @@
 <?php
-use Faker\Generator as Faker;
-$factory->define(App\Car::class, function (Faker $faker) {
-    return [
-        //'make' => $faker->firstName(),
-        'make' => $faker->randomElement(['firstName[]'=>'Ford', 'Honda', 'Toyota']),
-        'model' => $faker->company(),
-        'year' => $faker->date(),
-    ];
-    //$faker = factory(App\User::class)->model(['name[]'=>'ford', 'honda', 'toyota']);
-});
+use Illuminate\Database\Seeder;
+use App\User;
+use App\Car;
+class CarsTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $users = User::All();
+        $users->each(function ($user) {
+            $car = factory(\App\Car::class)->make();
+            $user->cars()->save($car);
+        });
+    }
+}
